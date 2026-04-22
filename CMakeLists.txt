@@ -1,34 +1,25 @@
 cmake_minimum_required(VERSION 3.12)
+project(KeyRecovery LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
-project(KEY_RECOVERY)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "" FORCE)
+endif()
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 find_package(OpenSSL REQUIRED)
 
-# Include directories
-include_directories(include ${CMAKE_CURRENT_SOURCE_DIR})
-
-# Source files
-set(COMMON_SOURCES
-    src/parties.cpp
-    src/utils.cpp
+add_executable(krp
+    src/main.cpp
+    src/ours.cpp
+    src/hjky95.cpp
+    src/party.cpp
+    src/primitive.cpp
 )
-
-set(HJKY_SOURCES
-    src/HJKY_recovery.cpp
-)
-
-set(OURS_SOURCES
-    src/our_recovery.cpp
-)
-
-# Executables
-add_executable(HJKY_RECOVERY ${COMMON_SOURCES} ${HJKY_SOURCES})
-add_executable(OUR_RECOVERY ${COMMON_SOURCES} ${OURS_SOURCES})
-
-# Link libraries
-target_link_libraries(HJKY_RECOVERY PRIVATE ${OPENSSL_LIBRARIES})
-target_link_libraries(OUR_RECOVERY PRIVATE ${OPENSSL_LIBRARIES})
-
-# Set output directory
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+target_include_directories(krp PRIVATE include)
+target_link_libraries(krp PRIVATE OpenSSL::Crypto)
+target_compile_options(krp PRIVATE -Wall -Wextra -Wpedantic)
