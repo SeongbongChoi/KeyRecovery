@@ -23,7 +23,7 @@ sudo apt install build-essential cmake libssl-dev
 #### Building
 
 ```
-git clone https://github.com/SeongbongChoi/KeyRecovery.git
+git clone https://github.com/CryptoLabCAU/KeyRecovery.git
 cd KeyRecovery
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j
